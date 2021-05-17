@@ -1,1 +1,1 @@
-web: node app_procfile.js
+web: node app.js
