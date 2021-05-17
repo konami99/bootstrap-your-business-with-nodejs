@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/konami99/bootstrap-your-business-with-nodejs#readme",
   "dependencies": {
+    "ejs": "^3.1.6",
     "express": "^4.17.1"
   }
 }
