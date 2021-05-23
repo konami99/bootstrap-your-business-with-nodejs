@@ -13,24 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.15.4'
-          
-      - name: Installing NPM
-        run: npm install
-
       - name: Generate deployment package
-        run: zip -r deploy.zip * -x "**node_modules**"
+        run: zip -r deploy.zip * -x "*.git"
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
