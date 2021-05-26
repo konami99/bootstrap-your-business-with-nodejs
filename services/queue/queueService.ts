@@ -19,7 +19,10 @@ export default class QueueService {
     const queue = this.getQueue();
     await queue.connect();
     await queue.enqueue(q, func, args);
-    await queue.end();
+  }
+
+  public static async endQueue() {
+    await this.getQueue().end();
   }
 
   private static getQueue() {
