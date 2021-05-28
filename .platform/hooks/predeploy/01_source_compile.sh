@@ -2,4 +2,4 @@
 
 export PATH=$PATH:`ls -td /opt/elasticbeanstalk/node-install/node-* | head -1`/bin
 
-npm run tsc
+./node_modules/.bin/tsc -p tsconfig.json
