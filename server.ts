@@ -2,7 +2,7 @@ import os from 'os';
 import cluster from 'cluster';
 import app from './app';
 import 'reflect-metadata';
-import DbConnection from './services/db/dbConnection';
+// import DbConnection from './services/db/dbConnection';
 
 const clusterWorkerSize = os.cpus().length;
 
@@ -11,7 +11,7 @@ const SERVER_PORT = process.env.PORT || 3000;
 if (clusterWorkerSize > 1) {
   if (cluster.isMaster) {
     console.log('Spawning master');
-    for (let i=0; i < clusterWorkerSize; i++) {
+    for (let i = 0; i < clusterWorkerSize; i++) {
       cluster.fork();
     }
 
@@ -22,12 +22,12 @@ if (clusterWorkerSize > 1) {
   } else {
     console.log('Spawning child process!');
     app.listen(SERVER_PORT, async () => {
-      await DbConnection.getConnection();
+      // await DbConnection.getConnection();
     });
   }
 } else {
   app.listen(SERVER_PORT, async () => {
-    await DbConnection.getConnection();
+    // await DbConnection.getConnection();
   });
 }
 
