@@ -23,11 +23,13 @@ if (clusterWorkerSize > 1) {
     console.log('Spawning child process!');
     app.listen(SERVER_PORT, async () => {
       // await DbConnection.getConnection();
+      console.log(`Example app listening at http://localhost:${SERVER_PORT}`);
     });
   }
 } else {
   app.listen(SERVER_PORT, async () => {
     // await DbConnection.getConnection();
+    console.log(`Example app listening at http://localhost:${SERVER_PORT}`);
   });
 }
 
