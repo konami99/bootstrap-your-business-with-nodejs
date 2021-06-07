@@ -1,6 +1,8 @@
 import { MultiWorker, Scheduler, Queue } from 'node-resque';
 import SendEmailJob from './jobs/sendEmailJob';
 import QueueService from './services/queue/queueService';
+import schedule from 'node-schedule';
+import helloService from './services/helloService';
 
 class JobWrapper {
   static wrap(proxy: any) {
@@ -21,7 +23,7 @@ async function start() {
     {
       connection: QueueService.connectionDetails(),
       queues: ['email'],
-      minTaskProcessors: 1,
+      minTaskProcessors: 10,
       maxTaskProcessors: 100,
       checkTimeout: 1000,
       maxEventLoopDelay: 10,
@@ -31,7 +33,25 @@ async function start() {
 
   const scheduler = new Scheduler({ connection: QueueService.connectionDetails() });
 
+  schedule.scheduleJob('10,20,30,40,50 * * * * *', async () => {
+    if (scheduler.leader) {
+      helloService.sayHello();
+    }
+  });
+
   multiWorker.start();
+
+  multiWorker.on("start", (workerId) => {
+    console.log("worker[" + workerId + "] started");
+  });
+
+  multiWorker.on("end", (workerId) => {
+    console.log("worker[" + workerId + "] ended");
+  });
+
+  multiWorker.on("cleaning_worker", (workerId, worker, pid) => {
+    console.log("cleaning old worker " + worker);
+  });
 
   await scheduler.connect();
   scheduler.start();
