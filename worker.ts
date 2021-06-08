@@ -35,7 +35,7 @@ async function start() {
 
   schedule.scheduleJob('10,20,30,40,50 * * * * *', async () => {
     if (scheduler.leader) {
-      helloService.sayHello();
+      // helloService.sayHello();
     }
   });
 
