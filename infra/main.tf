@@ -7,7 +7,7 @@ locals {
 }
 
 provider "aws" {
-  region = var.region
+  region     = var.region
 }
 
 resource "aws_db_parameter_group" "education" {
@@ -46,7 +46,6 @@ resource "aws_db_instance" "education" {
   engine_version         = "13.1"
   username               = var.master_db_username
   password               = var.master_db_password
-  db_subnet_group_name   = aws_db_subnet_group.education.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   parameter_group_name   = aws_db_parameter_group.education.name
   publicly_accessible    = true
