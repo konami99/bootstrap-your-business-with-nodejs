@@ -21,14 +21,18 @@ jobs:
       - name: Terraform Format
         working-directory: infra
         run: terraform fmt -check
+        continue-on-error: true
 
       - name: Terraform Init
+        working-directory: infra
         run: terraform init
 
       - name: Terraform Validate
+        working-directory: infra
         run: terraform validate -no-color
 
       - name: Terraform Plan
+        working-directory: infra
         run: terraform plan -no-color
 
   build:
