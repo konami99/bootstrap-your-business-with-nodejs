@@ -18,7 +18,6 @@ jobs:
       - name: Terraform Format
         working-directory: infra
         run: terraform fmt -check
-        continue-on-error: true
 
       - name: Terraform Init
         working-directory: infra
