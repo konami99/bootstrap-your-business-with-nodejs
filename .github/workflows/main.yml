@@ -33,7 +33,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: infra
-        run: terraform plan -no-color
+        run: terraform plan -var='master_db_username=test' -var='master_db_password=test'
 
   build:
     needs: terraform
