@@ -1,9 +1,9 @@
 branch-defaults:
   develop:
-    environment: nodejs-staging
+    environment: app-staging
     group_suffix: null
-  elasticache:
-    environment: nodejs-staging
+  main:
+    environment: app-production
     group_suffix: null
 global:
   application_name: bootstrap-your-business-with-nodejs
