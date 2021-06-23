@@ -106,3 +106,5 @@ dist
 .gitignore
 
 .js
+
+.terraform/

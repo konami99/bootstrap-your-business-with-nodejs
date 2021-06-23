@@ -3,12 +3,41 @@ name: Node.js CI
 on:
   push:
     branches:
-    - xdevelop
+    - terraform
 
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        working-directory: infra
+        run: terraform fmt
+
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: infra
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        working-directory: infra
+        run: terraform plan -var='master_db_username=test' -var='master_db_password=test'
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
+          AWS_DEFAULT_REGION: 'us-west-2'
+
+  build:
+    needs: terraform
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -56,8 +85,8 @@ jobs:
         with:
           aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
           aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
-          application_name: BootstrapYourBusinessWithNodejs
-          environment_name: BootstrapYourBusinessWithNodejs-Staging
+          application_name: bootstrap-your-business-with-nodejs
+          environment_name: nodejs-staging
           region: us-west-2
           version_label: "my-app-${{ steps.format-time.outputs.replaced }}"
           deployment_package: deploy.zip
