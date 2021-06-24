@@ -49,6 +49,7 @@ jobs:
           AWS_DEFAULT_REGION: 'us-west-2'
 
       - name: RDS host
+        working-directory: infra
         run: |
           output=$(terraform output rds_hostname)
           echo $output
@@ -58,6 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: RDS host
+        working-directory: infra
         run: |
           output=$(terraform output rds_hostname)
           echo $output
