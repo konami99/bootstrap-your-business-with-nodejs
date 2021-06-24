@@ -6,6 +6,14 @@ locals {
   }
 }
 
+terraform {
+  backend "s3" {
+    bucket = "bootstrap-your-business-with-nodejs-terraform"
+    key    = "state"
+    region = "us-west-2"
+  }
+}
+
 provider "aws" {
   region = var.region
 }
