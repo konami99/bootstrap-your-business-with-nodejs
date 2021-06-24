@@ -49,14 +49,18 @@ jobs:
           AWS_DEFAULT_REGION: 'us-west-2'
 
       - name: RDS host
-        run: terraform output rds_hostname
+        run: |
+          output=$(terraform output rds_hostname)
+          echo $output
 
   build:
     needs: terraform
     runs-on: ubuntu-latest
     steps:
       - name: RDS host
-        run: terraform output rds_hostname
+        run: |
+          output=$(terraform output rds_hostname)
+          echo $output
 
       - name: Checkout
         uses: actions/checkout@v2
