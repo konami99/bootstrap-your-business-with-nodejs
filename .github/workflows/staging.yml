@@ -48,6 +48,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
           AWS_DEFAULT_REGION: 'us-west-2'
 
+      - name: RDS host
+        run: terraform output rds_hostname
+
   build:
     needs: terraform
     runs-on: ubuntu-latest
