@@ -23,7 +23,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra
-        run: terraform init -backend-config='bucket=tf-bucket' -backend-config='region=us-west-2'
+        run: terraform init
 
       - name: Terraform Validate
         working-directory: infra
