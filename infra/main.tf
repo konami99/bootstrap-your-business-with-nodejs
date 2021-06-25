@@ -8,8 +8,8 @@ locals {
 
 terraform {
   backend "s3" {
-    bucket = "bootstrap-your-business-with-nodejs-terraform"
-    key    = local.common_tags.env
+    bucket = "bootstrap-your-business-with-nodejs-terraform-${local.common_tags.env}"
+    key    = state
     region = var.region
   }
 }
