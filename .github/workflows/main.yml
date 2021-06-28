@@ -37,6 +37,7 @@ jobs:
         run: |
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
+          export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
           terraform plan -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
