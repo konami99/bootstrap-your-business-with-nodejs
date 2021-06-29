@@ -32,7 +32,8 @@ jobs:
         working-directory: infra
         run: terraform validate -no-color
 
-      - name: Setup EB
+      - name: EB printenv
+        id: eb_printenv
         uses: hmanzur/actions-aws-eb@v1.0.0
         with:
           command: 'printenv app-staging'
@@ -44,6 +45,7 @@ jobs:
       - name: Terraform Plan
         working-directory: infra
         run: |
+          echo "${{ steps.eb_printenv.outputs.* }}"
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]" | xargs -0)
