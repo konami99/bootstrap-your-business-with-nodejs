@@ -35,9 +35,8 @@ jobs:
       - name: EB printenv
         id: eb_printenv
         uses: hmanzur/actions-aws-eb@v1.0.0
-        run: |
-          output=$(eb printenv app-staging)
-          echo $output
+        with:
+          command: 'echo $(printenv app-staging)'
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
