@@ -38,6 +38,7 @@ jobs:
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]" | xargs -0)
+          eb printenv app-staging
           echo $RDS_MASTER_USERNAME
           echo $RDS_MASTER_PASSWORD
           echo ${{ env.RDS_MASTER_USERNAME }}
