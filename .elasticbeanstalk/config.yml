@@ -5,6 +5,10 @@ branch-defaults:
   main:
     environment: app-production
     group_suffix: null
+environment-defaults:
+  app-staging:
+    branch: null
+    repository: null
 global:
   application_name: bootstrap-your-business-with-nodejs
   branch: null
@@ -15,7 +19,7 @@ global:
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: eb-cli
+  profile: null
   repository: null
   sc: git
   workspace_type: Application
