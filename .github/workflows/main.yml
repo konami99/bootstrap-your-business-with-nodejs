@@ -45,7 +45,7 @@ jobs:
       - name: Terraform Plan
         working-directory: infra
         run: |
-          echo "${{ steps.eb_printenv.outputs.* }}"
+          echo "${{join(steps.eb_printenv.outputs.*, '\n')}}"
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]" | xargs -0)
