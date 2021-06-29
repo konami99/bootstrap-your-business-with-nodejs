@@ -32,20 +32,18 @@ jobs:
         working-directory: infra
         run: terraform validate -no-color
 
-      - name: EB printenv
-        id: eb_printenv
-        uses: hmanzur/actions-aws-eb@v1.0.0
+      - name: Configure AWS credentials from Staging account
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          command: 'echo $(printenv app-staging)'
-        env:
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
-          AWS_DEFAULT_REGION: "us-west-2"
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: us-west-2
 
       - name: Terraform Plan
         working-directory: infra
         run: |
-          echo "${{join(steps.eb_printenv.outputs.*, '\n')}}"
+          output=$(eb printenv app-staging)
+          echo $output
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]" | xargs -0)
