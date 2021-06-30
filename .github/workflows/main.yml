@@ -32,12 +32,9 @@ jobs:
         working-directory: infra
         run: terraform validate -no-color
 
-      - name: Configure AWS credentials from Staging account
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
-          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
-          aws-region: us-west-2
+      - name: Brew install awsebcli
+        run: |
+          brew install awsebcli
 
       - name: Terraform Plan
         working-directory: infra
