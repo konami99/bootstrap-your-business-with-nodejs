@@ -34,12 +34,15 @@ jobs:
 
       - name: Brew install awsebcli
         run: |
-          brew install awsebcli
+          brew install aws-elasticbeanstalk
 
       - name: Terraform Plan
         working-directory: infra
         run: |
-          eb printenv app-staging
+          terraform workspace list
+          terraform workspace select staging || terraform workspace new staging
+          export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
+          terraform plan -var="master_db_username=${{env.RDS_MASTER_USERNAME}}" -var="master_db_password=${{env.RDS_MASTER_PASSWORD}}"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
@@ -49,7 +52,7 @@ jobs:
         run: |
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
-          export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]" | xargs -0)
+          export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
           terraform apply -auto-approve -var="master_db_username=${{env.RDS_MASTER_USERNAME}}" -var="master_db_password=${{env.RDS_MASTER_PASSWORD}}"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
