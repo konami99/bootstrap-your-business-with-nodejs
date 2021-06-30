@@ -39,8 +39,7 @@ jobs:
       - name: Terraform Plan
         working-directory: infra
         run: |
-          output=$(eb printenv app-staging)
-          echo $output
+          eb printenv app-staging
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
