@@ -1,16 +1,15 @@
-import QueueService from './queueService'
-import { Queue } from 'node-resque';
+import QueueService from './queueService';
 
 // see https://jestjs.io/docs/en/es6-class-mocks#mocking-non-default-class-exports
 const enqueueMock = jest.fn();
 
 jest.mock('node-resque', () => {
   return { 
-    Queue: jest.fn().mockImplementation(() => {
+    Queue: jest.fn(() => {
       return {
-        connect: jest.fn(),
+        connect: () => {},
         enqueue: enqueueMock,
-        end: jest.fn()
+        end: () => {}
       }
     }),
   }
@@ -23,7 +22,7 @@ afterEach(() => {
 describe('QueueService', () => {
   it('calls enqueue on Queue', async () => {
     await QueueService.enqueue('queue1', 'sendEmail');
-
-    expect(enqueueMock).toBeCalled()
+    await QueueService.endQueue();
+    expect(enqueueMock).toHaveBeenCalled()
   })
 })

@@ -1,7 +1,7 @@
 import sgMail from '@sendgrid/mail';
 import SendGrid from './sendGrid';
 
-jest.mock('@sendgrid/mail');
+sgMail.send = jest.fn()
 
 afterEach(() => {
   jest.clearAllMocks();
