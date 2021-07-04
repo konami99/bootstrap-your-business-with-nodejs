@@ -32,9 +32,8 @@ jobs:
         working-directory: infra
         run: terraform validate -no-color
 
-      - name: Brew install aws-elasticbeanstalk
-        run: |
-          brew install aws-elasticbeanstalk
+      - name: Brew Install aws-elasticbeanstalk
+        run: brew install aws-elasticbeanstalk
 
       - name: Terraform Plan
         working-directory: infra
@@ -58,7 +57,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
 
-      - name: RDS host
+      - name: RDS Host/Port
         working-directory: infra
         run: |
           echo $(terraform output rds_hostname)
@@ -74,14 +73,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
@@ -93,36 +84,11 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - name: Compiling to JavaScript
-        run: npm run tsc
+      - name: Brew Install aws-elasticbeanstalk
+        run: brew install aws-elasticbeanstalk
 
-      - name: Generate deployment package
-        run: zip -r deploy.zip * -x "**node_modules**"
-
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
-
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
-        with:
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
-
-      - name: Beanstalk Deploy for app
-        uses: einaregilsson/beanstalk-deploy@v17
-        with:
-          aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
-          aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
-          application_name: bootstrap-your-business-with-nodejs
-          environment_name: app-staging
-          region: us-west-2
-          version_label: "my-app-${{ steps.format-time.outputs.replaced }}"
-          deployment_package: deploy.zip
-          wait_for_environment_recovery: 300
+      - name: EB Deploy
+        run: eb deploy
 
       - name: Deployed!
         run: echo App deployed to ELB
