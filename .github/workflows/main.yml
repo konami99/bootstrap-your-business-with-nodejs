@@ -42,8 +42,6 @@ jobs:
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
-          echo $RDS_MASTER_USERNAME
-          echo $RDS_MASTER_PASSWORD
           terraform plan -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
@@ -55,8 +53,6 @@ jobs:
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
-          echo $RDS_MASTER_USERNAME
-          echo $RDS_MASTER_PASSWORD
           terraform apply -auto-approve -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
@@ -65,8 +61,8 @@ jobs:
       - name: RDS host
         working-directory: infra
         run: |
-          output=$(terraform output rds_hostname)
-          echo $output
+          echo $(terraform output rds_hostname)
+          echo $(terraform output rds_port)
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
