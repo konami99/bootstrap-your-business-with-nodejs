@@ -32,7 +32,7 @@ jobs:
         working-directory: infra
         run: terraform validate -no-color
 
-      - name: Brew install awsebcli
+      - name: Brew install aws-elasticbeanstalk
         run: |
           brew install aws-elasticbeanstalk
 

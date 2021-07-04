@@ -8,5 +8,6 @@ module.exports = {
     setupFiles: ['dotenv-flow/config'],
     verbose: true,
     collectCoverage: true,
-    collectCoverageFrom: ['<rootDir>/**/*.ts']
+    collectCoverageFrom: ['<rootDir>/**/*.ts'],
+    transformIgnorePatterns: ['^.+\\.js$']
 }
