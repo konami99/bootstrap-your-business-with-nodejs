@@ -113,7 +113,7 @@ jobs:
           flags: 'g'
 
       - name: Beanstalk Deploy for app
-        uses: einaregilsson/beanstalk-deploy@v16
+        uses: einaregilsson/beanstalk-deploy@v17
         with:
           aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
           aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
@@ -122,6 +122,7 @@ jobs:
           region: us-west-2
           version_label: "my-app-${{ steps.format-time.outputs.replaced }}"
           deployment_package: deploy.zip
+          wait_for_environment_recovery: 300
 
       - name: Deployed!
         run: echo App deployed to ELB
