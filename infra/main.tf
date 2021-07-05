@@ -47,6 +47,7 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_db_instance" "main" {
+  identifier             = "bootstrap-your-business-staging"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "postgres"
