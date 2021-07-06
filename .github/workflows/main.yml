@@ -36,10 +36,10 @@ jobs:
         run: brew install aws-elasticbeanstalk
 
       - name: Terraform Plan
-        working-directory: infra
         run: |
           export $(grep -v '^#' .env.staging | xargs -0)
           echo $DB_INSTANCE_CLASS
+          cd infra
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
@@ -49,10 +49,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
 
       - name: Terraform Apply
-        working-directory: infra
         run: |
           export $(grep -v '^#' .env.staging | xargs -0)
           echo $DB_INSTANCE_CLASS
+          cd infra
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
