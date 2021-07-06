@@ -2,7 +2,7 @@ locals {
   common_tags = {
     env     = terraform.workspace
     owner   = "richard chou"
-    project = "bootstrap-your-business-with-nodejs-${terraform.workspace}"
+    project = "bootstrap-your-business-with-nodejs"
   }
 }
 
@@ -47,8 +47,8 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_db_instance" "main" {
-  identifier             = "bootstrap-your-business-staging"
-  instance_class         = "db.t3.micro"
+  identifier             = "bootstrap-your-business-with-nodejs"
+  instance_class         = var.db_instance_class
   allocated_storage      = 5
   engine                 = "postgres"
   engine_version         = "13.1"
@@ -58,6 +58,7 @@ resource "aws_db_instance" "main" {
   parameter_group_name   = aws_db_parameter_group.main.name
   publicly_accessible    = true
   skip_final_snapshot    = true
+  deletion_protection    = true
 
   tags = local.common_tags
 }

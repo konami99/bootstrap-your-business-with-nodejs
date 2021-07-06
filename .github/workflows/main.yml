@@ -6,7 +6,7 @@ on:
     - develop
 
 jobs:
-  terraform:
+  staging:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,10 +38,11 @@ jobs:
       - name: Terraform Plan
         working-directory: infra
         run: |
+          export $(grep -v '^#' .env.staging | xargs -0)
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
-          terraform plan -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD"
+          terraform plan -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD" -var="db_instance_class=$DB_INSTANCE_CLASS"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
@@ -49,10 +50,11 @@ jobs:
       - name: Terraform Apply
         working-directory: infra
         run: |
+          export $(grep -v '^#' .env.staging | xargs -0)
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
-          terraform apply -auto-approve -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD"
+          terraform apply -auto-approve -var="master_db_username=$RDS_MASTER_USERNAME" -var="master_db_password=$RDS_MASTER_PASSWORD" -var="db_instance_class=$DB_INSTANCE_CLASS"
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
