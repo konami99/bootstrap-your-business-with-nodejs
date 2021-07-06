@@ -12,7 +12,7 @@ variable "master_db_password" {
 variable "db_instance_class" {
   description = "DB instance class"
   type        = string
-  sensitive   = true
+  sensitive   = false
 }
 
 variable "region" {

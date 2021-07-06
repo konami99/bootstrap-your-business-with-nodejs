@@ -39,6 +39,7 @@ jobs:
         working-directory: infra
         run: |
           export $(grep -v '^#' .env.staging | xargs -0)
+          echo $DB_INSTANCE_CLASS
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
@@ -51,6 +52,7 @@ jobs:
         working-directory: infra
         run: |
           export $(grep -v '^#' .env.staging | xargs -0)
+          echo $DB_INSTANCE_CLASS
           terraform workspace list
           terraform workspace select staging || terraform workspace new staging
           export $(eb printenv app-staging | grep -v 'Environment Variables' | tr -d "[:blank:]")
